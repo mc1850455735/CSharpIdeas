@@ -21,6 +21,12 @@
         }
 
         #region 组件设计器生成的代码
+
+
+        protected void InitializeComponent()
+        {
+            this.SuspendLayout();
+            this.ResumeLayout(false);
         }
 
         #endregion
