@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using System;
 
 namespace CSharpIdeas
 {
@@ -10,6 +11,8 @@ namespace CSharpIdeas
         #region --成员变量--
         // 控件
         Rectangle rect = new Rectangle();
+        bool mouseEnter = false;
+        bool buttonPressed = false;
         #endregion
 
         #region --属性--
@@ -18,9 +21,18 @@ namespace CSharpIdeas
         [Browsable(true), DefaultValue(2)]
         [Category("外貌")]
         public int DistanceToBorder { get; set; }
+
         [Browsable(true), DefaultValue(typeof(Color), "DodgerBlue"), Description("按钮颜色")]
         [Category("外貌")]
         public Color ButtonColor { get; set; }
+
+        [Browsable(true), DefaultValue(typeof(Color), "White"), Description("按钮按下颜色")]
+        [Category("外貌")]
+        public Color ButtonPressColor { get; set; }
+
+        [Browsable(true), DefaultValue(typeof(Color), "White"), Description("按钮默认颜色")]
+        [Category("外貌")]
+        public Color ButtonOverColor { get; set; }
         #endregion
         #region 边框
         [Browsable(true), DefaultValue(typeof(Color), "Black"), Description("按钮边框颜色")]
@@ -38,8 +50,10 @@ namespace CSharpIdeas
         {
             // 设置初始值 
             this.Height = this.Width = 80;
-            DistanceToBorder = 4;
-            ButtonColor = Color.Red;
+            DistanceToBorder = 2;
+            ButtonColor = Color.FromArgb(100, 200, 200, 200);
+            ButtonPressColor = Color.FromArgb(100, 150, 150, 150);
+            ButtonOverColor = Color.FromArgb(100, 250, 250, 250);
             BorderColor = Color.Black;
             BorderWidth = 4;
 
@@ -64,6 +78,48 @@ namespace CSharpIdeas
 
             // 绘制按钮边框
             DrawBorder(g);
+
+            if(mouseEnter && !buttonPressed)
+            {
+                PaintShape(g, new SolidBrush(ButtonOverColor), rect);
+            }
+            else if(buttonPressed)
+            {
+                PaintShape(g, new SolidBrush(ButtonPressColor), rect);
+            }
+        }
+
+        // 鼠标划入
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+            mouseEnter = true;
+        }
+
+        // 鼠标划出
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            mouseEnter = false;
+        }
+
+        // 鼠标按下
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            // 查看按下的是鼠标哪个键
+            if (e.Button != MouseButtons.Left) return;
+            buttonPressed = true;
+        }
+
+        // 鼠标抬起
+        protected override void OnMouseUp(MouseEventArgs mevent)
+        {
+            base.OnMouseUp(mevent);
+            if(mevent.Button != MouseButtons.Left) return;
+            buttonPressed = false;
+            // 重新绘制
+            base.Invalidate();
         }
         #endregion
 
