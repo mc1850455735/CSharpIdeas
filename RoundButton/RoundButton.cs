@@ -28,11 +28,29 @@ namespace CSharpIdeas
 
         [Browsable(true), DefaultValue(typeof(Color), "White"), Description("按钮按下颜色")]
         [Category("外貌")]
-        public Color ButtonPressColor { get; set; }
+        public Color ButtonPressColor
+        {
+            get {
+                int r, g, b;
+                r = ButtonColor.R - (int)(ButtonColor.R * 0.8);
+                g = ButtonColor.G - (int)(ButtonColor.G * 0.8);
+                b = ButtonColor.B - (int)(ButtonColor.B * 0.8);
+                return Color.FromArgb(ButtonColor.A, r, g, b); 
+            }
+        }
 
         [Browsable(true), DefaultValue(typeof(Color), "White"), Description("按钮默认颜色")]
         [Category("外貌")]
-        public Color ButtonOverColor { get; set; }
+        public Color ButtonOverColor 
+        {
+            get { 
+                int r, g, b;
+                r = ButtonColor.R + (int)((255 - ButtonColor.R) * 0.8);
+                g = ButtonColor.G + (int)((255 - ButtonColor.G) * 0.8);
+                b = ButtonColor.B + (int)((255 - ButtonColor.B) * 0.8);
+                return Color.FromArgb(ButtonColor.A, r, g, b);
+            }
+        }
         #endregion
         #region 边框
         [Browsable(true), DefaultValue(typeof(Color), "Black"), Description("按钮边框颜色")]
@@ -49,11 +67,9 @@ namespace CSharpIdeas
         public RoundButton()
         {
             // 设置初始值 
-            this.Height = this.Width = 80;
-            DistanceToBorder = 2;
+            this.Height = this.Width = 100;
+            DistanceToBorder = 3;
             ButtonColor = Color.FromArgb(100, 200, 200, 200);
-            ButtonPressColor = Color.FromArgb(100, 150, 150, 150);
-            ButtonOverColor = Color.FromArgb(100, 250, 250, 250);
             BorderColor = Color.Black;
             BorderWidth = 4;
 
