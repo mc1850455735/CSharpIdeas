@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using System;
 
 namespace CSharpIdeas
 {
@@ -10,6 +11,8 @@ namespace CSharpIdeas
         #region --成员变量--
         // 控件
         Rectangle rect = new Rectangle();
+        bool mouseEnter = false;
+        bool buttonPressed = false;
         #endregion
 
         #region --属性--
@@ -18,9 +21,36 @@ namespace CSharpIdeas
         [Browsable(true), DefaultValue(2)]
         [Category("外貌")]
         public int DistanceToBorder { get; set; }
+
         [Browsable(true), DefaultValue(typeof(Color), "DodgerBlue"), Description("按钮颜色")]
         [Category("外貌")]
         public Color ButtonColor { get; set; }
+
+        [Browsable(true), DefaultValue(typeof(Color), "White"), Description("按钮按下颜色")]
+        [Category("外貌")]
+        public Color ButtonPressColor
+        {
+            get {
+                int r, g, b;
+                r = ButtonColor.R - (int)(ButtonColor.R * 0.8);
+                g = ButtonColor.G - (int)(ButtonColor.G * 0.8);
+                b = ButtonColor.B - (int)(ButtonColor.B * 0.8);
+                return Color.FromArgb(ButtonColor.A, r, g, b); 
+            }
+        }
+
+        [Browsable(true), DefaultValue(typeof(Color), "White"), Description("按钮默认颜色")]
+        [Category("外貌")]
+        public Color ButtonOverColor 
+        {
+            get { 
+                int r, g, b;
+                r = ButtonColor.R + (int)((255 - ButtonColor.R) * 0.8);
+                g = ButtonColor.G + (int)((255 - ButtonColor.G) * 0.8);
+                b = ButtonColor.B + (int)((255 - ButtonColor.B) * 0.8);
+                return Color.FromArgb(ButtonColor.A, r, g, b);
+            }
+        }
         #endregion
         #region 边框
         [Browsable(true), DefaultValue(typeof(Color), "Black"), Description("按钮边框颜色")]
@@ -37,9 +67,9 @@ namespace CSharpIdeas
         public RoundButton()
         {
             // 设置初始值 
-            this.Height = this.Width = 80;
-            DistanceToBorder = 4;
-            ButtonColor = Color.Red;
+            this.Height = this.Width = 100;
+            DistanceToBorder = 3;
+            ButtonColor = Color.FromArgb(100, 200, 200, 200);
             BorderColor = Color.Black;
             BorderWidth = 4;
 
@@ -64,6 +94,48 @@ namespace CSharpIdeas
 
             // 绘制按钮边框
             DrawBorder(g);
+
+            if(mouseEnter && !buttonPressed)
+            {
+                PaintShape(g, new SolidBrush(ButtonOverColor), rect);
+            }
+            else if(buttonPressed)
+            {
+                PaintShape(g, new SolidBrush(ButtonPressColor), rect);
+            }
+        }
+
+        // 鼠标划入
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+            mouseEnter = true;
+        }
+
+        // 鼠标划出
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            mouseEnter = false;
+        }
+
+        // 鼠标按下
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            // 查看按下的是鼠标哪个键
+            if (e.Button != MouseButtons.Left) return;
+            buttonPressed = true;
+        }
+
+        // 鼠标抬起
+        protected override void OnMouseUp(MouseEventArgs mevent)
+        {
+            base.OnMouseUp(mevent);
+            if(mevent.Button != MouseButtons.Left) return;
+            buttonPressed = false;
+            // 重新绘制
+            base.Invalidate();
         }
         #endregion
 
