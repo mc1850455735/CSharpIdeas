@@ -36,6 +36,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnNo = new System.Windows.Forms.Button();
             this.btnYes = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.mcEndDate = new System.Windows.Forms.MonthCalendar();
+            this.rdbHasntEndDate = new System.Windows.Forms.RadioButton();
+            this.rdbHasEndDate = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.numRank)).BeginInit();
             this.SuspendLayout();
             // 
@@ -105,7 +109,7 @@
             // 
             // btnNo
             // 
-            this.btnNo.Location = new System.Drawing.Point(258, 347);
+            this.btnNo.Location = new System.Drawing.Point(431, 357);
             this.btnNo.Name = "btnNo";
             this.btnNo.Size = new System.Drawing.Size(99, 39);
             this.btnNo.TabIndex = 4;
@@ -115,7 +119,7 @@
             // 
             // btnYes
             // 
-            this.btnYes.Location = new System.Drawing.Point(115, 347);
+            this.btnYes.Location = new System.Drawing.Point(153, 357);
             this.btnYes.Name = "btnYes";
             this.btnYes.Size = new System.Drawing.Size(99, 39);
             this.btnYes.TabIndex = 5;
@@ -123,11 +127,53 @@
             this.btnYes.UseVisualStyleBackColor = true;
             this.btnYes.Click += new System.EventHandler(this.btnYes_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(390, 81);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(75, 15);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "结束日期:";
+            // 
+            // mcEndDate
+            // 
+            this.mcEndDate.Location = new System.Drawing.Point(393, 112);
+            this.mcEndDate.Name = "mcEndDate";
+            this.mcEndDate.TabIndex = 12;
+            // 
+            // rdbHasntEndDate
+            // 
+            this.rdbHasntEndDate.AutoSize = true;
+            this.rdbHasntEndDate.Location = new System.Drawing.Point(531, 33);
+            this.rdbHasntEndDate.Name = "rdbHasntEndDate";
+            this.rdbHasntEndDate.Size = new System.Drawing.Size(103, 19);
+            this.rdbHasntEndDate.TabIndex = 14;
+            this.rdbHasntEndDate.Text = "无截止时间";
+            this.rdbHasntEndDate.UseVisualStyleBackColor = true;
+            // 
+            // rdbHasEndDate
+            // 
+            this.rdbHasEndDate.AutoSize = true;
+            this.rdbHasEndDate.Checked = true;
+            this.rdbHasEndDate.Location = new System.Drawing.Point(393, 33);
+            this.rdbHasEndDate.Name = "rdbHasEndDate";
+            this.rdbHasEndDate.Size = new System.Drawing.Size(103, 19);
+            this.rdbHasEndDate.TabIndex = 15;
+            this.rdbHasEndDate.TabStop = true;
+            this.rdbHasEndDate.Text = "有截止时间";
+            this.rdbHasEndDate.UseVisualStyleBackColor = true;
+            this.rdbHasEndDate.CheckedChanged += new System.EventHandler(this.rdbHasEndDate_CheckedChanged);
+            // 
             // UpdataRemindFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(413, 420);
+            this.ClientSize = new System.Drawing.Size(722, 420);
+            this.Controls.Add(this.rdbHasntEndDate);
+            this.Controls.Add(this.rdbHasEndDate);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.mcEndDate);
             this.Controls.Add(this.numRank);
             this.Controls.Add(this.txtMain);
             this.Controls.Add(this.txtTitle);
@@ -137,7 +183,8 @@
             this.Controls.Add(this.btnNo);
             this.Controls.Add(this.btnYes);
             this.Name = "UpdataRemindFrm";
-            this.Text = "UpdataRemindFrm";
+            this.ShowIcon = false;
+            this.Text = "更新备忘录记录";
             this.Load += new System.EventHandler(this.UpdataRemindFrm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numRank)).EndInit();
             this.ResumeLayout(false);
@@ -155,5 +202,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnNo;
         private System.Windows.Forms.Button btnYes;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.MonthCalendar mcEndDate;
+        private System.Windows.Forms.RadioButton rdbHasntEndDate;
+        private System.Windows.Forms.RadioButton rdbHasEndDate;
     }
 }

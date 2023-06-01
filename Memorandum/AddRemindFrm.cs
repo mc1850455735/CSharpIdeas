@@ -18,6 +18,8 @@ namespace CSharpIdeas.Memorandum
         readonly MySqlConnection mySqlConnection;
         MySqlCommand mycomm;
 
+        bool hasEndDate = true;
+
         public AddRemindFrm()
         {
             InitializeComponent();
@@ -33,13 +35,18 @@ namespace CSharpIdeas.Memorandum
 
         private void btnYes_Click(object sender, EventArgs e)
         {
+            string end_date;
             string remind_main = txtMain.Text;
             string remind_title = txtTitle.Text;
             string remind_date = DateTime.Now.ToString("d");
+            if (hasEndDate)
+                end_date = "'" + mcEndDate.SelectionEnd.ToString("d") + "'";
+            else
+                end_date = "null";
             int import_rank = (int)numRank.Value;
 
-            sql = string.Format("insert into remind (remind_title, remind_main, remind_date, import_rank) " +
-                "values ('{0}', '{1}', '{2}', {3});", remind_title, remind_main, remind_date, import_rank);
+            sql = string.Format("insert into remind (remind_title, remind_main, end_date, remind_date, import_rank) " +
+                "values ('{0}', '{1}', {2}, '{3}', {4});", remind_title, remind_main, end_date, remind_date, import_rank);
 
             try
             {
@@ -52,6 +59,25 @@ namespace CSharpIdeas.Memorandum
             }
             catch(Exception ex) { MessageBox.Show(ex.Message); }
             finally { mySqlConnection.Close(); this.Close(); }
+        }
+
+        private void AddRemindFrm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void rdbHasEndDate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdbHasEndDate.Checked)
+            {
+                hasEndDate = true;
+                mcEndDate.Enabled = true;
+            }
+            else if (rdbHasntEndDate.Checked)
+            { 
+                hasEndDate = false;
+                mcEndDate.Enabled = false; 
+            }
         }
     }
 }
