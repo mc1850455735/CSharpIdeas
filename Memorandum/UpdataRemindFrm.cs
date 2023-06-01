@@ -20,6 +20,8 @@ namespace CSharpIdeas.Memorandum
         MySqlCommand mycomm;
         MySqlDataReader dr;
 
+        bool hasEndDate = true;
+
         public UpdataRemindFrm(int id)
         {
             InitializeComponent();
@@ -46,6 +48,10 @@ namespace CSharpIdeas.Memorandum
                     txtMain.Text = dr["remind_main"].ToString();
                     txtTitle.Text = dr["remind_title"].ToString();
                     numRank.Value = (int)dr["import_rank"];
+                    if (dr["end_date"].ToString() != "")
+                        rdbHasEndDate.Checked = true;
+                    else 
+                        rdbHasntEndDate.Checked = true;
                 }
             }
             catch(Exception ex) { MessageBox.Show(ex.Message); }
@@ -60,12 +66,17 @@ namespace CSharpIdeas.Memorandum
 
         private void btnYes_Click(object sender, EventArgs e)
         {
+            string end_date;
             string remind_main = txtMain.Text;
             string remind_title = txtTitle.Text;
+            if (hasEndDate)
+                end_date = "'" + mcEndDate.SelectionEnd.ToString("d") + "'";
+            else
+                end_date = "null";
             int import_rank = (int)numRank.Value;
 
-            sql = string.Format("update remind set remind_title = '{0}', remind_main = '{1}', import_rank = {2} where id = {3}",
-                remind_title, remind_main, import_rank, id);
+            sql = string.Format("update remind set remind_title = '{0}', remind_main = '{1}', import_rank = {2}, end_date = {3} where id = {4}",
+                remind_title, remind_main, import_rank, end_date ,id);
 
             try
             {
@@ -73,6 +84,8 @@ namespace CSharpIdeas.Memorandum
 
                 mycomm.CommandText = sql;
                 mycomm.ExecuteNonQuery();
+
+                MessageBox.Show("您的数据已经更新成功", "更新成功");
             }
             catch(Exception ex)
             {
@@ -82,5 +95,21 @@ namespace CSharpIdeas.Memorandum
 
             this.Close();
         }
+
+        private void rdbHasEndDate_CheckedChanged(object sender, EventArgs e)
+        {
+            if(rdbHasEndDate.Checked)
+            {
+                hasEndDate = true;
+                mcEndDate.Enabled = true;
+            }
+            else if(rdbHasntEndDate.Checked)
+            {
+                hasEndDate = false;
+                mcEndDate.Enabled = false;
+            }
+        }
     }
+
+
 }
